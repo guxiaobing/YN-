@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="gov.cn.water.bzmapper.WiuCdMapper">
+  		<select id="WiuCdList" parameterType="gov.cn.water.vo.pageVo" resultType="gov.cn.water.dao.wiuCd">
+  			select tt.wiu_cd,tt.wiu_nm,tt.lr_nm,tt.wiu_tp,tt.adl_cd,tt.tel,tt.ad_nm
+  			 from(select rownum rn,a.wiu_cd,a.wiu_nm,a.lr_nm,a.wiu_tp,a.adl_cd,a.tel,b.ad_nm from wr_wiu_b a,wr_ad_b b where a.adl_cd=b.ad_cd
+  				and a.wiu_nm like'%${searchName}%')tt where tt.rn>=(#{pageNum}-1)*#{pageSize}+1 and tt.rn&lt;#{pageSize}*#{pageNum}+1
+  		</select>
+  		<select id="getTotal" parameterType="gov.cn.water.vo.pageVo" resultType="int">
+  			select count(*) from wr_wiu_b a,wr_ad_b b where a.adl_cd=b.ad_cd
+  				and a.wiu_nm like'%${searchName}%'
+  		</select>
+  		
+  </mapper>
